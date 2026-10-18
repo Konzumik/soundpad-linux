@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Soundpad Linux
+Comment=Soundboard with a virtual microphone
+Comment[ru]=Саундпад с виртуальным микрофоном
+Exec=soundpad
+Icon=audio-input-microphone
+Categories=AudioVideo;Audio;
+Keywords=soundboard;microphone;discord;
+StartupWMClass=soundpad-linux
