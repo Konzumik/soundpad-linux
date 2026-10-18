@@ -1,0 +1,40 @@
+# Maintainer: Konzumik <me at konzumikx dot lol>
+pkgname=soundpad-linux
+pkgver=0.2.0
+pkgrel=1
+pkgdesc="Soundboard and voice changer with a virtual microphone for PipeWire/PulseAudio"
+arch=('x86_64' 'aarch64')
+url="https://github.com/Konzumik/soundpad-linux"
+license=('MIT')
+depends=('libpulse' 'gcc-libs' 'glibc')
+makedepends=('cargo')
+optdepends=('ffmpeg: opus, wma, webm and avi files'
+            'pipewire-pulse: on PipeWire systems')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+prepare() {
+  cd "$pkgname-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable
+  cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')"
+}
+
+build() {
+  cd "$pkgname-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable CARGO_TARGET_DIR=target
+  cargo build --frozen --release
+}
+
+check() {
+  cd "$pkgname-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable
+  cargo test --frozen --release
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  install -Dm755 target/release/soundpad "$pkgdir/usr/bin/soundpad"
+  install -Dm644 soundpad.desktop "$pkgdir/usr/share/applications/soundpad.desktop"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+}

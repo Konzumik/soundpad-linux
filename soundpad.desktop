@@ -6,5 +6,5 @@ Comment[ru]=Саундпад с виртуальным микрофоном
 Exec=soundpad
 Icon=audio-input-microphone
 Categories=AudioVideo;Audio;
-Keywords=soundboard;microphone;discord;
+Keywords=soundboard;microphone;discord;voice changer;
 StartupWMClass=soundpad-linux
