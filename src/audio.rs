@@ -158,7 +158,7 @@ fn decode_ffmpeg(path: &Path) -> Result<Vec<i16>, String> {
     if !out.status.success() {
         return Err(String::from_utf8_lossy(&out.stderr).trim().to_string());
     }
-    Ok(out.stdout.chunks_exact(2).map(|b| i16::from_le_bytes([b[0], b[1]])).collect())
+    Ok(out.stdout.as_chunks::<2>().0.iter().map(|b| i16::from_le_bytes(*b)).collect())
 }
 
 /// Linear-interpolation resampler for interleaved stereo.
@@ -554,7 +554,7 @@ fn mix_loop(state: Arc<Mutex<MixState>>, mic: Arc<MicBus>, mut mic_out: PacatOut
         };
         let has_voice = mic.active.load(Ordering::Relaxed) && mic.pull(&mut voice_in);
 
-        for (f, o) in out.chunks_exact_mut(2).enumerate() {
+        for (f, o) in out.as_chunks_mut::<2>().0.iter_mut().enumerate() {
             let v = if has_voice { voice_in[f] * mic_gain } else { 0.0 };
             o[0] = mix[f * 2] * master + v;
             o[1] = mix[f * 2 + 1] * master + v;
@@ -564,7 +564,7 @@ fn mix_loop(state: Arc<Mutex<MixState>>, mic: Arc<MicBus>, mut mic_out: PacatOut
 
         // Monitoring must never stall the mic stream: drop blocks if it falls behind.
         let gain = if monitor_on { monitor_gain } else { 0.0 };
-        for (f, o) in out.chunks_exact_mut(2).enumerate() {
+        for (f, o) in out.as_chunks_mut::<2>().0.iter_mut().enumerate() {
             let v = if has_voice && hear_myself { voice_in[f] * mic_gain } else { 0.0 };
             o[0] = mix[f * 2] * gain + v;
             o[1] = mix[f * 2 + 1] * gain + v;
