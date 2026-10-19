@@ -11,7 +11,7 @@ makedepends=('cargo')
 optdepends=('ffmpeg: opus, wma, webm and avi files'
             'pipewire-pulse: on PipeWire systems')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
-sha256sums=('959e7d9421b9327d8fa0097e3edef34286216f214bf08ccf82627eb670762bfc')
+sha256sums=('9a98deb373befe89c66cef6949d1653b622c0f4204a50b9bde355fc7abb9899f')
 
 prepare() {
   cd "$pkgname-$pkgver"
