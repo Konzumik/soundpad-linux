@@ -22,6 +22,9 @@ pub fn run() -> Result<(), String> {
             .with_inner_size([860.0, 620.0])
             .with_min_inner_size([560.0, 400.0])
             .with_drag_and_drop(true),
+        // With vsync, eglSwapBuffers waits for a Wayland frame callback, which compositors don't send to hidden
+        // windows (minimized, other desktop): the UI thread blocks and KDE reports "not responding".
+        vsync: false,
         ..Default::default()
     };
     eframe::run_native("Soundpad Linux", options, Box::new(|cc| Ok(Box::new(GuiApp::new(cc)))))

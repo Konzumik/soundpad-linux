@@ -1,6 +1,6 @@
 # Maintainer: Konzumik <me at konzumikx dot lol>
 pkgname=soundpad-linux
-pkgver=0.2.0
+pkgver=0.2.1
 pkgrel=1
 pkgdesc="Soundboard and voice changer with a virtual microphone for PipeWire/PulseAudio"
 arch=('x86_64' 'aarch64')
